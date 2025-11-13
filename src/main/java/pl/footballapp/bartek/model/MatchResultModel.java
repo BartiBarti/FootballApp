@@ -1,4 +1,4 @@
-package pl.footballapp.bartek.repository;
+package pl.footballapp.bartek.model;
 
 import java.time.LocalDate;
 
