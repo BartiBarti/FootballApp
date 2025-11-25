@@ -2,6 +2,10 @@ package pl.footballapp.bartek.model;
 
 public class TeamModel {
 
+    public static final String TEAM_ID_COL = "TEAM_ID";
+
+    public static final String TEAM_NAME_COL = "TEAM_NAME";
+
     private int teamId;
 
     private String teamName;
