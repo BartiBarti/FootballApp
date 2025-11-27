@@ -1,10 +1,13 @@
 package pl.footballapp.bartek.gui;
 
-import pl.footballapp.bartek.repository.DatabaseConnection;
+import pl.footballapp.bartek.model.TeamModel;
+import pl.footballapp.bartek.repository.TeamRepository;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.List;
+
 
 public class MainTable extends JFrame {
     private JPanel mainPanel;
@@ -19,7 +22,15 @@ public class MainTable extends JFrame {
     }
 
     public static void main(String[] args) {
-        DatabaseConnection.getInstance();
+        TeamRepository teamRepository = new TeamRepository();
+        TeamModel teamModel = new TeamModel();
+        teamModel.setTeamName("Widzew");
+//        teamRepository.save(teamModel);
+        List<TeamModel> teamList = teamRepository.findAll();
+        System.out.println(teamList);
+        teamRepository.delete(1);
+        List<TeamModel> teamList2 = teamRepository.findAll();
+        System.out.println(teamList2);
         SwingUtilities.invokeLater(() -> new MainTable().setVisible(true));
     }
 }
