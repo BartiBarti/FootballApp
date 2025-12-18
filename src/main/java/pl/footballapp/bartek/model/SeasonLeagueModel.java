@@ -2,7 +2,35 @@ package pl.footballapp.bartek.model;
 
 public class SeasonLeagueModel {
 
-    private int seasonId;
+    public static final String SEASON_LEAGUE_ID_COL = "SEASON_LEAGUE_ID";
+
+    public static final String POINTS_COL = "POINTS";
+
+    public static final String MATCHES_COL = "MATCHES";
+
+    public static final String MATCHES_WIN_COL = "MATCHES_WIN";
+
+    public static final String MATCHES_DRAW_COL = "MATCHES_DRAW";
+
+    public static final String MATCHES_LOSS_COL = "MATCHES_LOSS";
+
+    public static final String GOALS_SCORED_COL = "GOALS_SCORED";
+
+    public static final String GOALS_LOST_COL = "GOALS_LOST";
+
+    public static final String GOALS_DIFFERENCE_COL = "GOALS_DIFFERENCE";
+
+    public static final String SEASON_ID_COL = "SEASON_ID";
+
+    private int matches;
+
+    private int matchesWin;
+
+    private int matchesDraw;
+
+    private int matchesLoss;
+
+    private int seasonLeagueId;
 
     private int teamId;
 
@@ -14,7 +42,15 @@ public class SeasonLeagueModel {
 
     private int goalsDifference;
 
-    private int startSeasonYear;
+    private int seasonId;
+
+    public int getSeasonLeagueId() {
+        return seasonLeagueId;
+    }
+
+    public void setSeasonLeagueId(int seasonLeagueId) {
+        this.seasonLeagueId = seasonLeagueId;
+    }
 
     public int getSeasonId() {
         return seasonId;
@@ -64,24 +100,52 @@ public class SeasonLeagueModel {
         this.goalsDifference = goalsDifference;
     }
 
-    public int getStartSeasonYear() {
-        return startSeasonYear;
+    public void setMatchesWin(int matchesWin) {
+        this.matchesWin = matchesWin;
     }
 
-    public void setStartSeasonYear(int startSeasonYear) {
-        this.startSeasonYear = startSeasonYear;
+    public int getMatchesDraw() {
+        return matchesDraw;
+    }
+
+    public void setMatchesDraw(int matchesDraw) {
+        this.matchesDraw = matchesDraw;
+    }
+
+    public int getMatchesLoss() {
+        return matchesLoss;
+    }
+
+    public void setMatchesLoss(int matchesLoss) {
+        this.matchesLoss = matchesLoss;
+    }
+
+    public int getMatchesWin() {
+        return matchesWin;
+    }
+
+    public int getMatches() {
+        return matches;
+    }
+
+    public void setMatches(int matches) {
+        this.matches = matches;
     }
 
     @Override
     public String toString() {
         return "SeasonLeagueModel{" +
-                "seasonId=" + seasonId +
+                "matches=" + matches +
+                ", matchesWin=" + matchesWin +
+                ", matchesDraw=" + matchesDraw +
+                ", matchesLoss=" + matchesLoss +
+                ", seasonLeagueId=" + seasonLeagueId +
                 ", teamId=" + teamId +
                 ", points=" + points +
                 ", goalsScored=" + goalsScored +
                 ", goalsLost=" + goalsLost +
                 ", goalsDifference=" + goalsDifference +
-                ", startSeasonYear=" + startSeasonYear +
+                ", seasonId=" + seasonId +
                 '}';
     }
 }

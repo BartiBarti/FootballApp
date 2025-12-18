@@ -53,7 +53,7 @@ public class TeamRepository implements Repository {
 
         try {
             Statement statement = connection.createStatement();
-            String query = "Insert Into TEAMS (TEAM_NAME) values ('%s');";
+            String query = "Insert Into TEAMS (" + TEAM_NAME_COL + ") values ('%s');";
             String filledQuery = String.format(query, team.getTeamName());
             statement.executeUpdate(filledQuery);
         } catch (SQLException e) {
@@ -75,7 +75,7 @@ public class TeamRepository implements Repository {
         }
     }
 
-    public boolean update(TeamModel team){
+    public boolean update(TeamModel team) {
 
         try {
             Statement statement = connection.createStatement();
