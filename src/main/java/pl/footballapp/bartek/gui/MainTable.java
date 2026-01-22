@@ -7,6 +7,8 @@ import pl.footballapp.bartek.service.SeasonService;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 
@@ -23,6 +25,7 @@ public class MainTable extends JFrame {
     private JLabel seasonStatusLabel;
     private JLabel seasonLabel;
     private JComboBox seasonComboBox;
+    private SeasonModel choosenSeason;
 
     private SeasonService seasonService = new SeasonService();
 
@@ -35,7 +38,15 @@ public class MainTable extends JFrame {
         setContentPane(mainPanel);
 
         fillSeasonComboBox();
+        setButtonsVisibility();
         loadTable();
+        addTeamButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SwingUtilities.invokeLater(() -> new AddTeam(choosenSeason.getSeasonId()).setVisible(true));
+
+            }
+        });
     }
 
     private void loadTable() {
@@ -54,10 +65,34 @@ public class MainTable extends JFrame {
         for (SeasonModel season : seasons) {
             model.addElement(season);
         }
-        SeasonStatus seasonStatus = seasons.get(0).getSeasonStatus();
-        seasonStatusLabel.setText(seasonStatus.getPlTranslation());
+        choosenSeason = seasons.get(0);
+        seasonStatusLabel.setText(choosenSeason.getSeasonStatus().getPlTranslation());
 
         seasonComboBox.setModel(model);
+    }
+
+    private void setButtonsVisibility(){
+        SeasonStatus choosenSeasonStatus = choosenSeason.getSeasonStatus();
+        if(SeasonStatus.OPEN == choosenSeasonStatus) {
+            endSeasonButton.setEnabled(false);
+            enterResultButton.setEnabled(false);
+            addTeamButton.setEnabled(true);
+            deleteTeamButton.setEnabled(true);
+            startSeasonButton.setEnabled(true);
+        } else if (SeasonStatus.IN_PROGRESS == choosenSeasonStatus) {
+            endSeasonButton.setEnabled(true);
+            enterResultButton.setEnabled(true);
+            addTeamButton.setEnabled(false);
+            deleteTeamButton.setEnabled(false);
+            startSeasonButton.setEnabled(false);
+        } else if (SeasonStatus.CLOSED == choosenSeasonStatus) {
+            endSeasonButton.setEnabled(false);
+            enterResultButton.setEnabled(false);
+            addTeamButton.setEnabled(false);
+            deleteTeamButton.setEnabled(false);
+            startSeasonButton.setEnabled(false);
+        }
+
     }
 
     public static void main(String[] args) {

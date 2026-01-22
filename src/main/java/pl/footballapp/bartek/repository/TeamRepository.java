@@ -49,18 +49,35 @@ public class TeamRepository implements Repository {
         return null;
     }
 
-    public boolean save(TeamModel team) {
+    public boolean teamExist(String teamName) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement
+                    ("select * from TEAMS where " + TEAM_NAME_COL + " = ? ");
+            preparedStatement.setString(1, teamName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+
+        }
+    }
+
+    public int save(TeamModel team) {
 
         try {
             Statement statement = connection.createStatement();
             String query = "Insert Into TEAMS (" + TEAM_NAME_COL + ") values ('%s');";
             String filledQuery = String.format(query, team.getTeamName());
             statement.executeUpdate(filledQuery);
+            ResultSet generatedKeyResultSet = statement.getGeneratedKeys();
+            if (generatedKeyResultSet.next()){
+                return generatedKeyResultSet.getInt(1);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return -1;
         }
-        return true;
+        return -1;
     }
 
     public void delete(int teamId) {
