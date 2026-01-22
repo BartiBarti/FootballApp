@@ -4,6 +4,8 @@ public class SeasonLeagueModel {
 
     public static final String SEASON_LEAGUE_ID_COL = "SEASON_LEAGUE_ID";
 
+    public static final String TEAM_ID_COL = "TEAM_ID";
+
     public static final String POINTS_COL = "POINTS";
 
     public static final String MATCHES_COL = "MATCHES";
@@ -21,6 +23,8 @@ public class SeasonLeagueModel {
     public static final String GOALS_DIFFERENCE_COL = "GOALS_DIFFERENCE";
 
     public static final String SEASON_ID_COL = "SEASON_ID";
+
+
 
     private int matches;
 
