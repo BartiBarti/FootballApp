@@ -2,8 +2,11 @@ package pl.footballapp.bartek.repository;
 
 import pl.footballapp.bartek.model.SeasonLeagueModel;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import static pl.footballapp.bartek.model.SeasonLeagueModel.*;
 
@@ -34,5 +37,53 @@ public class SeasonLeagueRepository implements Repository {
         }
         return true;
     }
+
+    public List<SeasonLeagueModel> findAllBySeasonId (int seasonId){
+        List<SeasonLeagueModel> seasonLeagueList = new ArrayList<>();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from SEASON_LEAGUE where "
+                                                        + SEASON_ID_COL
+                                                        + " = "
+                                                        + seasonId);
+            while (resultSet.next()) {
+                SeasonLeagueModel seasonLeague = getSeasonLeaugeFromResultSet(resultSet);
+                seasonLeagueList.add(seasonLeague);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return seasonLeagueList;
+    }
+
+    public List<Integer> findAllTeamIdsFromSeason(Integer seasonId){
+        List<SeasonLeagueModel> seasonLeagueList = findAllBySeasonId(seasonId);
+        List<Integer> teamIds = new ArrayList<>();
+        for (SeasonLeagueModel seasonLeague : seasonLeagueList) {
+            teamIds.add(seasonLeague.getTeamId());
+        }
+        return teamIds;
+    }
+
+
+    private SeasonLeagueModel getSeasonLeaugeFromResultSet(ResultSet resultSet) throws SQLException {
+        SeasonLeagueModel seasonLeague = new SeasonLeagueModel();
+        seasonLeague.setSeasonLeagueId(resultSet.getInt(SEASON_LEAGUE_ID_COL));
+        seasonLeague.setTeamId(resultSet.getInt(TEAM_ID_COL));
+        seasonLeague.setPoints(resultSet.getInt(POINTS_COL));
+        seasonLeague.setMatches(resultSet.getInt(MATCHES_COL));
+        seasonLeague.setMatchesWin(resultSet.getInt(MATCHES_WIN_COL));
+        seasonLeague.setMatchesDraw(resultSet.getInt(MATCHES_DRAW_COL));
+        seasonLeague.setMatchesLoss(resultSet.getInt(MATCHES_LOSS_COL));
+        seasonLeague.setGoalsScored(resultSet.getInt(GOALS_SCORED_COL));
+        seasonLeague.setGoalsLost(resultSet.getInt(GOALS_LOST_COL));
+        seasonLeague.setGoalsDifference(resultSet.getInt(GOALS_DIFFERENCE_COL));
+        seasonLeague.setSeasonId(resultSet.getInt(SEASON_ID_COL));
+
+        return seasonLeague;
+    }
+
+
 
 }

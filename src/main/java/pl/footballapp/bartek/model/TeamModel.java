@@ -1,5 +1,7 @@
 package pl.footballapp.bartek.model;
 
+import java.util.Objects;
+
 public class TeamModel {
 
     public static final String TEAM_ID_COL = "TEAM_ID";
@@ -28,9 +30,19 @@ public class TeamModel {
 
     @Override
     public String toString() {
-        return "TeamModel{" +
-                "teamId=" + teamId +
-                ", teamName='" + teamName + '\'' +
-                '}';
+        return teamName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TeamModel teamModel = (TeamModel) o;
+        return teamId == teamModel.teamId && Objects.equals(teamName, teamModel.teamName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(teamId, teamName);
     }
 }

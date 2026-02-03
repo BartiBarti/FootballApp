@@ -109,6 +109,15 @@ public class TeamRepository implements Repository {
         return true;
     }
 
+    public List<TeamModel> findAllByIds(List<Integer> teamIds){
+        List<TeamModel> teamList = new ArrayList<>();
+        for (Integer teamId : teamIds) {
+            TeamModel team = findById(teamId);
+            teamList.add(team);
+        }
+        return teamList;
+    }
+
     private TeamModel getTeamFromResultSet(ResultSet resultSet) throws SQLException {
         TeamModel team = new TeamModel();
         team.setTeamId(resultSet.getInt(TEAM_ID_COL));
@@ -116,6 +125,7 @@ public class TeamRepository implements Repository {
 
         return team;
     }
+
 
 
 }

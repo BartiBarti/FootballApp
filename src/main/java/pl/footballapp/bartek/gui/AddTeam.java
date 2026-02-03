@@ -1,6 +1,7 @@
 package pl.footballapp.bartek.gui;
 
 import org.apache.commons.lang3.StringUtils;
+import pl.footballapp.bartek.model.TeamModel;
 import pl.footballapp.bartek.service.SeasonLeagueService;
 import pl.footballapp.bartek.service.TeamService;
 
@@ -8,6 +9,8 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddTeam extends JFrame {
 
@@ -33,39 +36,60 @@ public class AddTeam extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String newTeam = newTeamTextField.getText();
-                boolean teamNameValid = true;
-                if (StringUtils.isBlank(newTeam)) {
-                    JOptionPane.showMessageDialog(AddTeam.this, "Nie wpisano nazwy drużyny!", "Błąd!", JOptionPane.ERROR_MESSAGE);
-                    teamNameValid = false;
-                } else if (teamService.teamExist(newTeam)) {
-                    JOptionPane.showMessageDialog(AddTeam.this, "Drużyna już istnieje", "Błąd!", JOptionPane.ERROR_MESSAGE);
-                    teamNameValid = false;
-                }
+                boolean teamNameValid = isTeamNameValid(newTeam);
                 if (teamNameValid) {
-                    int teamId = teamService.createTeam(newTeam);
-                    if (teamId != -1) {
-                        boolean teamAdded = seasonLeagueService.addTeamToSeasonLeague(teamId, seasonId);
-                        if (teamAdded) {
-                            JOptionPane.showMessageDialog(AddTeam.this,
-                                    "Drużyna " + newTeam + " pomyślnie dodana do sezonu ligowego!",
-                                    "Potwierdzenie",
-                                    JOptionPane.INFORMATION_MESSAGE);
-                        } else {
-                            JOptionPane.showMessageDialog(AddTeam.this,
-                                    "Wystąpił błąd podczas dodania drużyny " + newTeam + " do sezonu ligowego.",
-                                    "Błąd",
-                                    JOptionPane.ERROR_MESSAGE);
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(AddTeam.this,
-                                "Wystąpił błąd podczas dodania drużyny!",
-                                "Błąd!",
-                                JOptionPane.ERROR_MESSAGE);
-                    }
+                    addNewTeam(newTeam, seasonId);
                 }
 
             }
         });
+        fillTeamComboBox(seasonId);
+    }
+
+    private void addNewTeam(String newTeam, int seasonId) {
+        int teamId = teamService.createTeam(newTeam);
+        if (teamId != -1) {
+            boolean teamAdded = seasonLeagueService.addTeamToSeasonLeague(teamId, seasonId);
+            if (teamAdded) {
+                JOptionPane.showMessageDialog(AddTeam.this,
+                        "Drużyna " + newTeam + " pomyślnie dodana do sezonu ligowego!",
+                        "Potwierdzenie",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(AddTeam.this,
+                        "Wystąpił błąd podczas dodania drużyny " + newTeam + " do sezonu ligowego.",
+                        "Błąd",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(AddTeam.this,
+                    "Wystąpił błąd podczas dodania drużyny!",
+                    "Błąd!",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private boolean isTeamNameValid(String newTeam) {
+        boolean teamNameValid = true;
+        if (StringUtils.isBlank(newTeam)) {
+            JOptionPane.showMessageDialog(AddTeam.this, "Nie wpisano nazwy drużyny!", "Błąd!", JOptionPane.ERROR_MESSAGE);
+            teamNameValid = false;
+        } else if (teamService.teamExist(newTeam)) {
+            JOptionPane.showMessageDialog(AddTeam.this, "Drużyna już istnieje", "Błąd!", JOptionPane.ERROR_MESSAGE);
+            teamNameValid = false;
+        }
+        return teamNameValid;
+    }
+
+
+    private void fillTeamComboBox(Integer seasonId) {
+        DefaultComboBoxModel<TeamModel> model = new DefaultComboBoxModel<>();
+        List<TeamModel> teamsAddedToSeason = teamService.findAllTeamsCurrentlyAddedToSeason(seasonId);
+        List<TeamModel> teams = teamService.findAllTeamsWithoutCurrentAdded(teamsAddedToSeason);
+        for (TeamModel team : teams) {
+            model.addElement(team);
+        }
+        teamsComboBox.setModel(model);
     }
 
 
