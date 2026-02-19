@@ -41,5 +41,7 @@ public class TeamService {
         return teamsAddedToSeason;
     }
 
-
+    public TeamModel findTeam(Integer teamId){
+        return teamRepository.findById(teamId);
+    }
 }

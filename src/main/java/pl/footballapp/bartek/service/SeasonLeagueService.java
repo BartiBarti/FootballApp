@@ -3,6 +3,8 @@ package pl.footballapp.bartek.service;
 import pl.footballapp.bartek.model.SeasonLeagueModel;
 import pl.footballapp.bartek.repository.SeasonLeagueRepository;
 
+import java.util.List;
+
 public class SeasonLeagueService {
 
     private SeasonLeagueRepository seasonLeagueRepository = new SeasonLeagueRepository();
@@ -20,6 +22,11 @@ public class SeasonLeagueService {
         seasonLeagueModel.setGoalsLost(0);
         seasonLeagueModel.setGoalsDifference(0);
         return seasonLeagueRepository.save(seasonLeagueModel);
+    }
+
+    public List<SeasonLeagueModel> findAllSeasonLeagueTeams(Integer seasonId){
+
+        return seasonLeagueRepository.findAllBySeasonId(seasonId);
     }
 
 }

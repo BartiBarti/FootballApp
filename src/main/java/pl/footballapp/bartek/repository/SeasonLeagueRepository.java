@@ -38,14 +38,17 @@ public class SeasonLeagueRepository implements Repository {
         return true;
     }
 
-    public List<SeasonLeagueModel> findAllBySeasonId (int seasonId){
+    public List<SeasonLeagueModel> findAllBySeasonId(int seasonId) {
         List<SeasonLeagueModel> seasonLeagueList = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from SEASON_LEAGUE where "
-                                                        + SEASON_ID_COL
-                                                        + " = "
-                                                        + seasonId);
+                    + SEASON_ID_COL
+                    + " = "
+                    + seasonId
+                    + " order by POINTS desc, GOALS_DIFFERENCE desc, "
+                    + "GOALS_SCORED desc, GOALS_LOST asc;");
+
             while (resultSet.next()) {
                 SeasonLeagueModel seasonLeague = getSeasonLeaugeFromResultSet(resultSet);
                 seasonLeagueList.add(seasonLeague);
@@ -57,7 +60,7 @@ public class SeasonLeagueRepository implements Repository {
         return seasonLeagueList;
     }
 
-    public List<Integer> findAllTeamIdsFromSeason(Integer seasonId){
+    public List<Integer> findAllTeamIdsFromSeason(Integer seasonId) {
         List<SeasonLeagueModel> seasonLeagueList = findAllBySeasonId(seasonId);
         List<Integer> teamIds = new ArrayList<>();
         for (SeasonLeagueModel seasonLeague : seasonLeagueList) {
@@ -83,7 +86,6 @@ public class SeasonLeagueRepository implements Repository {
 
         return seasonLeague;
     }
-
 
 
 }
