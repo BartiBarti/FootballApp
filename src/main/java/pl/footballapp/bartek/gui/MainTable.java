@@ -37,6 +37,8 @@ public class MainTable extends JFrame {
 
     private TeamService teamService = new TeamService();
 
+    private static MainTable mainTable = new MainTable();
+
     public MainTable() {
         setTitle("Football App");
         setSize(800, 500);
@@ -51,13 +53,13 @@ public class MainTable extends JFrame {
         addTeamButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(() -> new AddTeam(choosenSeason.getSeasonId()).setVisible(true));
+                SwingUtilities.invokeLater(() -> new AddTeam(choosenSeason.getSeasonId(), mainTable).setVisible(true));
 
             }
         });
     }
 
-    private void loadTable() {
+    public void loadTable() {
         String[] headers = new String[]{"#", "Drużyna", "M", "Z", "R", "P", "B+", "B-", "RB", "Punkty"};
         DefaultTableModel tableModel = new DefaultTableModel(headers, 0);
         tableModel.setRowCount(0);
@@ -135,7 +137,7 @@ public class MainTable extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new MainTable().setVisible(true));
+        SwingUtilities.invokeLater(() -> mainTable.setVisible(true));
     }
 
     private void createUIComponents() {

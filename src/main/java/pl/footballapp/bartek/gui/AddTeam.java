@@ -23,7 +23,7 @@ public class AddTeam extends JFrame {
 
     private SeasonLeagueService seasonLeagueService = new SeasonLeagueService();
 
-    public AddTeam(int seasonId) {
+    public AddTeam(int seasonId, MainTable mainTable) {
         setTitle("Dodawanie drużyny");
         setSize(400, 150);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -38,6 +38,7 @@ public class AddTeam extends JFrame {
                 boolean teamNameValid = isTeamNameValid(newTeam);
                 if (teamNameValid) {
                     addNewTeam(newTeam, seasonId);
+                    mainTable.loadTable();
                     dispose();
                 }
 
@@ -50,6 +51,7 @@ public class AddTeam extends JFrame {
                 TeamModel selectedTeam = (TeamModel) teamsComboBox.getSelectedItem();
                 if (selectedTeam != null) {
                     addTeamToSeasonLeagueWithDialog(selectedTeam.getTeamName(), seasonId, selectedTeam.getTeamId());
+                    mainTable.loadTable();
                     dispose();
                 } else {
                     JOptionPane.showMessageDialog(AddTeam.this, "Wszystkie drużyny już wybrane. \n" +
