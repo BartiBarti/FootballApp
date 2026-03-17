@@ -49,6 +49,22 @@ public class TeamRepository implements Repository {
         return null;
     }
 
+    public TeamModel findTeamByTeamName(String teamName) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement
+                    ("select * from TEAMS where " + TEAM_NAME_COL + " = ?");
+            preparedStatement.setString(1, teamName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                TeamModel team = getTeamFromResultSet(resultSet);
+                return team;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
     public boolean teamExist(String teamName) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement

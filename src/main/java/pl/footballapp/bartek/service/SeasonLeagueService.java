@@ -24,9 +24,12 @@ public class SeasonLeagueService {
         return seasonLeagueRepository.save(seasonLeagueModel);
     }
 
-    public List<SeasonLeagueModel> findAllSeasonLeagueTeams(Integer seasonId){
+    public List<SeasonLeagueModel> findAllSeasonLeagueTeamsOrderByFootballRules(Integer seasonId){
+        return seasonLeagueRepository.findAllBySeasonIdOrderByFootballRules(seasonId);
+    }
 
-        return seasonLeagueRepository.findAllBySeasonId(seasonId);
+    public void deleteTeamFromSeasonLeague(int teamId){
+        seasonLeagueRepository.deleteTeam(teamId);
     }
 
 }

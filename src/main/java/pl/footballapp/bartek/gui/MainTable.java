@@ -3,6 +3,7 @@ package pl.footballapp.bartek.gui;
 import pl.footballapp.bartek.enums.SeasonStatus;
 import pl.footballapp.bartek.model.SeasonLeagueModel;
 import pl.footballapp.bartek.model.SeasonModel;
+import pl.footballapp.bartek.model.TeamModel;
 import pl.footballapp.bartek.service.SeasonLeagueService;
 import pl.footballapp.bartek.service.SeasonService;
 import pl.footballapp.bartek.service.TeamService;
@@ -46,6 +47,7 @@ public class MainTable extends JFrame {
         setLocationRelativeTo(null);
         mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         setContentPane(mainPanel);
+        seasonLeagueTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         fillSeasonComboBox();
         setButtonsVisibility();
@@ -57,19 +59,24 @@ public class MainTable extends JFrame {
 
             }
         });
+        deleteTeamButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteTeamAction();
+            }
+        });
     }
 
     public void loadTable() {
         String[] headers = new String[]{"#", "Drużyna", "M", "Z", "R", "P", "B+", "B-", "RB", "Punkty"};
         DefaultTableModel tableModel = new DefaultTableModel(headers, 0);
         tableModel.setRowCount(0);
-//        todo posortować drużyny zgodnie z zasadmi piłki nożnej
 //        1. Sortujemy po liczbie zdobytych punktów
 //        2. Sortujemy po różnicy bramkowej
 //        3. Sortujemy po liczbie zdobytych bramek
 //        3. Sortujemy po liczbie straconych bramek (im mniej tym drużyna wyżej)
 
-        List<SeasonLeagueModel> seasonLeagueList = seasonLeagueService.findAllSeasonLeagueTeams(choosenSeason.getSeasonId());
+        List<SeasonLeagueModel> seasonLeagueList = seasonLeagueService.findAllSeasonLeagueTeamsOrderByFootballRules(choosenSeason.getSeasonId());
 
         int teamOrdinalNumber = 1;
         for (SeasonLeagueModel seasonLeagueTeam : seasonLeagueList) {
@@ -136,11 +143,37 @@ public class MainTable extends JFrame {
 
     }
 
+    private void createUIComponents() {
+        seasonComboBox = new JComboBox();
+    }
+
+    private void deleteTeamAction() {
+        int selectedRow = seasonLeagueTable.getSelectedRow();
+        if( selectedRow == -1) {
+            JOptionPane.showMessageDialog(MainTable.this, "No Team selected yet",
+                    "WARNING!", JOptionPane.WARNING_MESSAGE);
+        } else {
+            int confirmation = JOptionPane.showConfirmDialog(MainTable.this, "Are you sure you want \n to delete this team?",
+                    "CONFIRMATION", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (confirmation == JOptionPane.YES_OPTION) {
+                String selectedTeam = (String) seasonLeagueTable.getValueAt(selectedRow, 1);
+                TeamModel team = teamService.findTeamByName(selectedTeam);
+                seasonLeagueService.deleteTeamFromSeasonLeague(team.getTeamId());
+                JOptionPane.showMessageDialog(MainTable.this, "Team "
+                                                + selectedTeam + " deleted from season!",
+                                                "DELETED", JOptionPane.INFORMATION_MESSAGE);
+                loadTable();
+//                 Todo sprawdzić, czy działą dodać listener do przycisku "usunąć drużynę"
+
+            }
+        }
+    }
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> mainTable.setVisible(true));
     }
 
-    private void createUIComponents() {
-        seasonComboBox = new JComboBox();
-    }
+
+
+
 }

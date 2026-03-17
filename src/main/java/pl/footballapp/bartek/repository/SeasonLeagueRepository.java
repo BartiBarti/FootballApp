@@ -38,7 +38,7 @@ public class SeasonLeagueRepository implements Repository {
         return true;
     }
 
-    public List<SeasonLeagueModel> findAllBySeasonId(int seasonId) {
+    public List<SeasonLeagueModel> findAllBySeasonIdOrderByFootballRules(int seasonId) {
         List<SeasonLeagueModel> seasonLeagueList = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
@@ -61,7 +61,7 @@ public class SeasonLeagueRepository implements Repository {
     }
 
     public List<Integer> findAllTeamIdsFromSeason(Integer seasonId) {
-        List<SeasonLeagueModel> seasonLeagueList = findAllBySeasonId(seasonId);
+        List<SeasonLeagueModel> seasonLeagueList = findAllBySeasonIdOrderByFootballRules(seasonId);
         List<Integer> teamIds = new ArrayList<>();
         for (SeasonLeagueModel seasonLeague : seasonLeagueList) {
             teamIds.add(seasonLeague.getTeamId());
@@ -69,6 +69,16 @@ public class SeasonLeagueRepository implements Repository {
         return teamIds;
     }
 
+    public void deleteTeam(int teamId){
+        try {
+            Statement statement = connection.createStatement();
+            String query = "delete from SEASON_LEAGUE where TEAM_ID = %d";
+            String filledQuery = String.format(query, teamId);
+            statement.executeUpdate(filledQuery);
+        } catch (SQLException e){
+            throw new RuntimeException();
+        }
+    }
 
     private SeasonLeagueModel getSeasonLeaugeFromResultSet(ResultSet resultSet) throws SQLException {
         SeasonLeagueModel seasonLeague = new SeasonLeagueModel();

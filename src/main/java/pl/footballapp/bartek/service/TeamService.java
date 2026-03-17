@@ -44,4 +44,8 @@ public class TeamService {
     public TeamModel findTeam(Integer teamId){
         return teamRepository.findById(teamId);
     }
+
+    public TeamModel findTeamByName(String teamName){
+        return teamRepository.findTeamByTeamName(teamName);
+    }
 }
