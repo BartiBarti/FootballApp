@@ -119,9 +119,9 @@ public class MainTable extends JFrame {
         seasonComboBox.setModel(model);
     }
 
-    private void setButtonsVisibility(){
+    private void setButtonsVisibility() {
         SeasonStatus choosenSeasonStatus = choosenSeason.getSeasonStatus();
-        if(SeasonStatus.OPEN == choosenSeasonStatus) {
+        if (SeasonStatus.OPEN == choosenSeasonStatus) {
             endSeasonButton.setEnabled(false);
             enterResultButton.setEnabled(false);
             addTeamButton.setEnabled(true);
@@ -149,7 +149,7 @@ public class MainTable extends JFrame {
 
     private void deleteTeamAction() {
         int selectedRow = seasonLeagueTable.getSelectedRow();
-        if( selectedRow == -1) {
+        if (selectedRow == -1) {
             JOptionPane.showMessageDialog(MainTable.this, "No Team selected yet",
                     "WARNING!", JOptionPane.WARNING_MESSAGE);
         } else {
@@ -160,8 +160,8 @@ public class MainTable extends JFrame {
                 TeamModel team = teamService.findTeamByName(selectedTeam);
                 seasonLeagueService.deleteTeamFromSeasonLeague(team.getTeamId());
                 JOptionPane.showMessageDialog(MainTable.this, "Team "
-                                                + selectedTeam + " deleted from season!",
-                                                "DELETED", JOptionPane.INFORMATION_MESSAGE);
+                                + selectedTeam + " deleted from season!",
+                        "DELETED", JOptionPane.INFORMATION_MESSAGE);
                 loadTable();
 //                 Todo sprawdzić, czy działą dodać listener do przycisku "usunąć drużynę"
 
@@ -172,8 +172,6 @@ public class MainTable extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> mainTable.setVisible(true));
     }
-
-
 
 
 }

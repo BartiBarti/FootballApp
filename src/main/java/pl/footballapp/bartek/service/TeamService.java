@@ -13,11 +13,11 @@ public class TeamService {
 
     private SeasonLeagueRepository seasonLeagueRepository = new SeasonLeagueRepository();
 
-    public boolean teamExist(String teamName){
+    public boolean teamExist(String teamName) {
         return teamRepository.teamExist(teamName);
     }
 
-    public int createTeam(String teamName){
+    public int createTeam(String teamName) {
         TeamModel teamModel = new TeamModel();
         teamModel.setTeamName(teamName);
         return teamRepository.save(teamModel);
@@ -27,7 +27,7 @@ public class TeamService {
         List<TeamModel> filteredTeams = new ArrayList<>();
         List<TeamModel> allTeams = teamRepository.findAll();
         for (TeamModel team : allTeams) {
-            if(!teamsAdded.contains(team)){
+            if (!teamsAdded.contains(team)) {
                 filteredTeams.add(team);
 
             }
@@ -41,11 +41,11 @@ public class TeamService {
         return teamsAddedToSeason;
     }
 
-    public TeamModel findTeam(Integer teamId){
+    public TeamModel findTeam(Integer teamId) {
         return teamRepository.findById(teamId);
     }
 
-    public TeamModel findTeamByName(String teamName){
+    public TeamModel findTeamByName(String teamName) {
         return teamRepository.findTeamByTeamName(teamName);
     }
 }

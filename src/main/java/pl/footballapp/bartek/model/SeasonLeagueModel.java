@@ -25,7 +25,6 @@ public class SeasonLeagueModel {
     public static final String SEASON_ID_COL = "SEASON_ID";
 
 
-
     private int matches;
 
     private int matchesWin;

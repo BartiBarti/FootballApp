@@ -69,13 +69,13 @@ public class SeasonLeagueRepository implements Repository {
         return teamIds;
     }
 
-    public void deleteTeam(int teamId){
+    public void deleteTeam(int teamId) {
         try {
             Statement statement = connection.createStatement();
             String query = "delete from SEASON_LEAGUE where TEAM_ID = %d";
             String filledQuery = String.format(query, teamId);
             statement.executeUpdate(filledQuery);
-        } catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException();
         }
     }

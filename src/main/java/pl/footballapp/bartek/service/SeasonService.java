@@ -11,7 +11,7 @@ public class SeasonService {
 
     private SeasonRepository seasonRepository = new SeasonRepository();
 
-    public List<SeasonModel> findAllSeasonsWithCurrent(){
+    public List<SeasonModel> findAllSeasonsWithCurrent() {
         List<SeasonModel> seasonsInDb = seasonRepository.findAllOrderByDesc();
         if (seasonsInDb.isEmpty()) {
             LocalDate currentDate = LocalDate.now();

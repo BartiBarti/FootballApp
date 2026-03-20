@@ -55,7 +55,7 @@ public class TeamRepository implements Repository {
                     ("select * from TEAMS where " + TEAM_NAME_COL + " = ?");
             preparedStatement.setString(1, teamName);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 TeamModel team = getTeamFromResultSet(resultSet);
                 return team;
             }
@@ -86,7 +86,7 @@ public class TeamRepository implements Repository {
             String filledQuery = String.format(query, team.getTeamName());
             statement.executeUpdate(filledQuery);
             ResultSet generatedKeyResultSet = statement.getGeneratedKeys();
-            if (generatedKeyResultSet.next()){
+            if (generatedKeyResultSet.next()) {
                 return generatedKeyResultSet.getInt(1);
             }
         } catch (SQLException e) {
@@ -125,7 +125,7 @@ public class TeamRepository implements Repository {
         return true;
     }
 
-    public List<TeamModel> findAllByIds(List<Integer> teamIds){
+    public List<TeamModel> findAllByIds(List<Integer> teamIds) {
         List<TeamModel> teamList = new ArrayList<>();
         for (Integer teamId : teamIds) {
             TeamModel team = findById(teamId);
@@ -141,7 +141,6 @@ public class TeamRepository implements Repository {
 
         return team;
     }
-
 
 
 }

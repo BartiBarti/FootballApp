@@ -9,7 +9,7 @@ public class SeasonLeagueService {
 
     private SeasonLeagueRepository seasonLeagueRepository = new SeasonLeagueRepository();
 
-    public boolean addTeamToSeasonLeague(int teamId, int seasonId){
+    public boolean addTeamToSeasonLeague(int teamId, int seasonId) {
         SeasonLeagueModel seasonLeagueModel = new SeasonLeagueModel();
         seasonLeagueModel.setTeamId(teamId);
         seasonLeagueModel.setSeasonId(seasonId);
@@ -24,11 +24,11 @@ public class SeasonLeagueService {
         return seasonLeagueRepository.save(seasonLeagueModel);
     }
 
-    public List<SeasonLeagueModel> findAllSeasonLeagueTeamsOrderByFootballRules(Integer seasonId){
+    public List<SeasonLeagueModel> findAllSeasonLeagueTeamsOrderByFootballRules(Integer seasonId) {
         return seasonLeagueRepository.findAllBySeasonIdOrderByFootballRules(seasonId);
     }
 
-    public void deleteTeamFromSeasonLeague(int teamId){
+    public void deleteTeamFromSeasonLeague(int teamId) {
         seasonLeagueRepository.deleteTeam(teamId);
     }
 
