@@ -1,5 +1,6 @@
 package pl.footballapp.bartek.model;
 
+import pl.footballapp.bartek.enums.ParameterName;
 import pl.footballapp.bartek.enums.ParameterType;
 
 public class ParameterModel {
@@ -14,7 +15,7 @@ public class ParameterModel {
 
     private int parameterId;
 
-    private String parameterName;
+    private ParameterName parameterName;
 
     private String parameterValue;
 
@@ -28,11 +29,11 @@ public class ParameterModel {
         this.parameterId = parameterId;
     }
 
-    public String getParameterName() {
+    public ParameterName getParameterName() {
         return parameterName;
     }
 
-    public void setParameterName(String parameterName) {
+    public void setParameterName(ParameterName parameterName) {
         this.parameterName = parameterName;
     }
 
