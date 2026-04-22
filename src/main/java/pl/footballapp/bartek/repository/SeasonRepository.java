@@ -12,13 +12,15 @@ import java.util.List;
 import static pl.footballapp.bartek.model.SeasonModel.*;
 
 public class SeasonRepository implements Repository {
+
     public List<SeasonModel> findAllOrderByDesc() {
 
         List<SeasonModel> seasonList = new ArrayList<>();
 
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from SEASONS order by START_SEASON_YEAR desc;");
+            ResultSet resultSet = statement.executeQuery(select(false, false) + " order by "
+                + START_SEASON_YEAR_COL + " desc;");
             while (resultSet.next()) {
                 SeasonModel season = getSeasonFromResultSet(resultSet);
                 seasonList.add(season);
@@ -34,7 +36,7 @@ public class SeasonRepository implements Repository {
 
         try {
             Statement statement = connection.createStatement();
-            String query = "Insert Into SEASONS ("
+            String query = "Insert Into " + getTableName() + " ("
                     + START_SEASON_YEAR_COL + ","
                     + END_SEASON_YEAR_COL + ","
                     + SEASON_STATUS_COL
@@ -48,6 +50,11 @@ public class SeasonRepository implements Repository {
         return true;
     }
 
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
+    }
+
     private SeasonModel getSeasonFromResultSet(ResultSet resultSet) throws SQLException {
         SeasonModel season = new SeasonModel();
         season.setSeasonId(resultSet.getInt(SEASON_ID_COL));
@@ -57,5 +64,4 @@ public class SeasonRepository implements Repository {
 
         return season;
     }
-
 }

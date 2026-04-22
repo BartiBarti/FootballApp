@@ -5,6 +5,8 @@ import pl.footballapp.bartek.enums.ParameterType;
 
 public class ParameterModel {
 
+    public static final String TABLE_NAME = "PARAMETERS";
+
     public static final String PARAMETER_ID_COL = "PARAMETER_ID";
 
     public static final String PARAMETER_NAME_COL = "PARAMETER_NAME";
@@ -52,4 +54,5 @@ public class ParameterModel {
     public void setParameterType(ParameterType parameterType) {
         this.parameterType = parameterType;
     }
+
 }

@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 public class MatchResultModel {
 
+    public static final String TABLE_NAME = "MATCH_RESULT";
+
     private int matchId;
 
     private int guestId;
@@ -55,6 +57,7 @@ public class MatchResultModel {
     public void setHostGoals(int hostGoals) {
         this.hostGoals = hostGoals;
     }
+
 }
 
 

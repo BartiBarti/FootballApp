@@ -2,6 +2,8 @@ package pl.footballapp.bartek.model;
 
 public class SeasonLeagueModel {
 
+    public static final String TABLE_NAME = "SEASON_LEAGUE";
+
     public static final String SEASON_LEAGUE_ID_COL = "SEASON_LEAGUE_ID";
 
     public static final String TEAM_ID_COL = "TEAM_ID";

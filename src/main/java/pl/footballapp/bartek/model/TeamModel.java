@@ -4,6 +4,8 @@ import java.util.Objects;
 
 public class TeamModel {
 
+    public static final String TABLE_NAME = "TEAMS";
+
     public static final String TEAM_ID_COL = "TEAM_ID";
 
     public static final String TEAM_NAME_COL = "TEAM_NAME";
@@ -45,4 +47,5 @@ public class TeamModel {
     public int hashCode() {
         return Objects.hash(teamId, teamName);
     }
+
 }

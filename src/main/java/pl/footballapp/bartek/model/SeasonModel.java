@@ -4,11 +4,15 @@ import pl.footballapp.bartek.enums.SeasonStatus;
 
 public class SeasonModel {
 
-    public static final String SEASON_ID_COL = "SEASON_ID";
-    public static final String START_SEASON_YEAR_COL = "START_SEASON_YEAR";
-    public static final String END_SEASON_YEAR_COL = "END_SEASON_YEAR";
-    public static final String SEASON_STATUS_COL = "SEASON_STATUS";
+    public static final String TABLE_NAME = "SEASONS";
 
+    public static final String SEASON_ID_COL = "SEASON_ID";
+
+    public static final String START_SEASON_YEAR_COL = "START_SEASON_YEAR";
+
+    public static final String END_SEASON_YEAR_COL = "END_SEASON_YEAR";
+
+    public static final String SEASON_STATUS_COL = "SEASON_STATUS";
 
     private int seasonId;
 
@@ -54,4 +58,5 @@ public class SeasonModel {
     public String toString() {
         return startSeasonYear + "/" + endSeasonYear;
     }
+
 }

@@ -21,7 +21,7 @@ public class TeamRepository implements Repository {
 
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from TEAMS;");
+            ResultSet resultSet = statement.executeQuery(select(false, true));
             while (resultSet.next()) {
                 TeamModel team = getTeamFromResultSet(resultSet);
                 teamList.add(team);
@@ -36,7 +36,7 @@ public class TeamRepository implements Repository {
     public TeamModel findById(int id) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement
-                    ("select * from TEAMS where " + TEAM_ID_COL + " = ? ");
+                    (select(true, false) + TEAM_ID_COL + " = ? ");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -52,7 +52,7 @@ public class TeamRepository implements Repository {
     public TeamModel findTeamByTeamName(String teamName) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement
-                    ("select * from TEAMS where " + TEAM_NAME_COL + " = ?");
+                    (select(true, false) + TEAM_NAME_COL + " = ?");
             preparedStatement.setString(1, teamName);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -68,7 +68,7 @@ public class TeamRepository implements Repository {
     public boolean teamExist(String teamName) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement
-                    ("select * from TEAMS where " + TEAM_NAME_COL + " = ? ");
+                    (select(true, false)  + TEAM_NAME_COL + " = ? ");
             preparedStatement.setString(1, teamName);
             ResultSet resultSet = preparedStatement.executeQuery();
             return resultSet.next();
@@ -82,7 +82,7 @@ public class TeamRepository implements Repository {
 
         try {
             Statement statement = connection.createStatement();
-            String query = "Insert Into TEAMS (" + TEAM_NAME_COL + ") values ('%s');";
+            String query = "Insert Into " + getTableName() + " (" + TEAM_NAME_COL + ") values ('%s');";
             String filledQuery = String.format(query, team.getTeamName());
             statement.executeUpdate(filledQuery);
             ResultSet generatedKeyResultSet = statement.getGeneratedKeys();
@@ -100,7 +100,7 @@ public class TeamRepository implements Repository {
 
         try {
             Statement statement = connection.createStatement();
-            String query = "delete from TEAMS where TEAM_ID = %d";
+            String query = "delete from " + getTableName() + " where " + TEAM_ID_COL + " = %d";
             String filledQuery = String.format(query, teamId);
             statement.executeUpdate(filledQuery);
         } catch (SQLException e) {
@@ -112,11 +112,11 @@ public class TeamRepository implements Repository {
 
         try {
             Statement statement = connection.createStatement();
-            String query = "update TEAMS set ";
+            String query = "update " + getTableName() + " set ";
             if (StringUtils.isNotBlank(team.getTeamName())) {
-                query = query + "TEAM_NAME = '" + team.getTeamName() + "' ";
+                query = query + TEAM_NAME_COL + " = '" + team.getTeamName() + "' ";
             }
-            query = query + "where TEAM_ID = " + team.getTeamId();
+            query = query + "where " + TEAM_ID_COL + " = " + team.getTeamId();
             statement.executeUpdate(query);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -134,6 +134,11 @@ public class TeamRepository implements Repository {
         return teamList;
     }
 
+    @Override
+    public String getTableName() {
+        return TeamModel.TABLE_NAME;
+    }
+
     private TeamModel getTeamFromResultSet(ResultSet resultSet) throws SQLException {
         TeamModel team = new TeamModel();
         team.setTeamId(resultSet.getInt(TEAM_ID_COL));
@@ -141,6 +146,4 @@ public class TeamRepository implements Repository {
 
         return team;
     }
-
-
 }

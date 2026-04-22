@@ -15,7 +15,7 @@ public class SeasonLeagueRepository implements Repository {
     public boolean save(SeasonLeagueModel season) {
         try {
             Statement statement = connection.createStatement();
-            String query = "Insert Into SEASON_LEAGUE (" + TEAM_ID_COL + ", "
+            String query = "Insert Into " + getTableName() + " (" + TEAM_ID_COL + ", "
                     + POINTS_COL + ", "
                     + MATCHES_COL + ", "
                     + MATCHES_WIN_COL + ", "
@@ -42,12 +42,12 @@ public class SeasonLeagueRepository implements Repository {
         List<SeasonLeagueModel> seasonLeagueList = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from SEASON_LEAGUE where "
+            ResultSet resultSet = statement.executeQuery(select(true, false)
                     + SEASON_ID_COL
                     + " = "
                     + seasonId
-                    + " order by POINTS desc, GOALS_DIFFERENCE desc, "
-                    + "GOALS_SCORED desc, GOALS_LOST asc;");
+                    + " order by " + POINTS_COL + " desc, " + GOALS_DIFFERENCE_COL + " desc, "
+                    + GOALS_SCORED_COL + " desc, " + GOALS_LOST_COL + " asc;");
 
             while (resultSet.next()) {
                 SeasonLeagueModel seasonLeague = getSeasonLeaugeFromResultSet(resultSet);
@@ -72,12 +72,17 @@ public class SeasonLeagueRepository implements Repository {
     public void deleteTeam(int teamId) {
         try {
             Statement statement = connection.createStatement();
-            String query = "delete from SEASON_LEAGUE where TEAM_ID = %d";
+            String query = "delete from " + getTableName() + " where " + TEAM_ID_COL + " = %d";
             String filledQuery = String.format(query, teamId);
             statement.executeUpdate(filledQuery);
         } catch (SQLException e) {
             throw new RuntimeException();
         }
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     private SeasonLeagueModel getSeasonLeaugeFromResultSet(ResultSet resultSet) throws SQLException {
@@ -96,6 +101,4 @@ public class SeasonLeagueRepository implements Repository {
 
         return seasonLeague;
     }
-
-
 }

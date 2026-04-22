@@ -21,7 +21,7 @@ public class ParameterRepository implements Repository {
         List<ParameterModel> parameterList = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from PARAMETERS;");
+            ResultSet resultSet = statement.executeQuery(select(false, true));
             while (resultSet.next()) {
                 ParameterModel parameter = getParameterFromResultSet(resultSet);
                 parameterList.add(parameter);
@@ -35,7 +35,7 @@ public class ParameterRepository implements Repository {
     public ParameterModel findByParameterName(ParameterName parameterName) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement
-                    ("select * from PARAMETERS where " + PARAMETER_NAME_COL + " = ?");
+                    (select(true, false) + PARAMETER_NAME_COL + " = ?");
             preparedStatement.setString(1, parameterName.name());
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -51,7 +51,7 @@ public class ParameterRepository implements Repository {
     private boolean update(ParameterModel parameter) {
         try {
             Statement statement = connection.createStatement();
-            String query = "update PARAMETERS set ";
+            String query = "update " + getTableName() + " set ";
             if (StringUtils.isNotBlank(parameter.getParameterValue())) {
                 query = query + PARAMETER_VALUE_COL + " = '" + parameter.getParameterValue() + "' ";
             }
@@ -70,6 +70,11 @@ public class ParameterRepository implements Repository {
         }
     }
 
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
+    }
+
     private ParameterModel getParameterFromResultSet(ResultSet resultSet) throws SQLException {
         ParameterModel parameter = new ParameterModel();
         parameter.setParameterId(resultSet.getInt(PARAMETER_ID_COL));
@@ -83,5 +88,4 @@ public class ParameterRepository implements Repository {
 
         return parameter;
     }
-
 }
