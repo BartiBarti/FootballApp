@@ -30,6 +30,7 @@ public class MainTable extends JFrame {
     private JLabel seasonLabel;
     private JComboBox seasonComboBox;
     private JScrollPane scrollPane;
+    private JButton paramButton;
     private SeasonModel choosenSeason;
 
     private SeasonLeagueService seasonLeagueService = new SeasonLeagueService();
@@ -63,6 +64,12 @@ public class MainTable extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 deleteTeamAction();
+            }
+        });
+        paramButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ParameterWindow().setVisible(true);
             }
         });
     }
@@ -163,8 +170,6 @@ public class MainTable extends JFrame {
                                 + selectedTeam + " deleted from season!",
                         "DELETED", JOptionPane.INFORMATION_MESSAGE);
                 loadTable();
-//                 Todo sprawdzić, czy działą dodać listener do przycisku "usunąć drużynę"
-
             }
         }
     }

@@ -29,12 +29,17 @@ public class ParameterService {
         }
         if (allParametersValid) {
             parameterRepository.updateAll(parameters);
+            JOptionPane.showMessageDialog(null,
+                    "Poprawnie zapisano parametry!",
+                    "Zapis parametrów!",
+                    JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null,
                     "Błędnie wypełniono wartości parametrów.",
                     "Błąd",
                     JOptionPane.ERROR_MESSAGE);
         }
+
     }
 
 }
