@@ -20,7 +20,7 @@ public class SeasonRepository implements Repository {
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(select(false, false) + " order by "
-                + START_SEASON_YEAR_COL + " desc;");
+                    + START_SEASON_YEAR_COL + " desc;");
             while (resultSet.next()) {
                 SeasonModel season = getSeasonFromResultSet(resultSet);
                 seasonList.add(season);

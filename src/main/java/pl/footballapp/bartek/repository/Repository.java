@@ -13,33 +13,33 @@ public interface Repository {
         StringBuilder sb = new StringBuilder();
 
         if (columns == null || columns.length == 0) {
-          sb.append("SELECT * FROM ").append(getTableName());
-        } else {
-          sb.append("SELECT ");
-          boolean hasColumn = false;
-
-          for (int i = 0; i < columns.length; i++) {
-            String col = columns[i];
-            if (col != null && !col.trim().isEmpty()) {
-              if (hasColumn) {
-                sb.append(", ");
-              }
-              sb.append(col.trim());
-              hasColumn = true;
-            }
-          }
-
-          if (!hasColumn) {
             sb.append("SELECT * FROM ").append(getTableName());
-          } else {
-            sb.append(" FROM ").append(getTableName());
-          }
+        } else {
+            sb.append("SELECT ");
+            boolean hasColumn = false;
+
+            for (int i = 0; i < columns.length; i++) {
+                String col = columns[i];
+                if (col != null && !col.trim().isEmpty()) {
+                    if (hasColumn) {
+                        sb.append(", ");
+                    }
+                    sb.append(col.trim());
+                    hasColumn = true;
+                }
+            }
+
+            if (!hasColumn) {
+                sb.append("SELECT * FROM ").append(getTableName());
+            } else {
+                sb.append(" FROM ").append(getTableName());
+            }
         }
 
         if (where) {
-          sb.append(" WHERE ");
+            sb.append(" WHERE ");
         } else if (end) {
-          sb.append(";");
+            sb.append(";");
         }
 
         return sb.toString();

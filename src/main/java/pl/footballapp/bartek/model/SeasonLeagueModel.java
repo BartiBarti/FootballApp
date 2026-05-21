@@ -105,10 +105,6 @@ public class SeasonLeagueModel {
         this.goalsDifference = goalsDifference;
     }
 
-    public void setMatchesWin(int matchesWin) {
-        this.matchesWin = matchesWin;
-    }
-
     public int getMatchesDraw() {
         return matchesDraw;
     }
@@ -127,6 +123,10 @@ public class SeasonLeagueModel {
 
     public int getMatchesWin() {
         return matchesWin;
+    }
+
+    public void setMatchesWin(int matchesWin) {
+        this.matchesWin = matchesWin;
     }
 
     public int getMatches() {

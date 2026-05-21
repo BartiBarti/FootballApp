@@ -4,9 +4,16 @@ import java.sql.*;
 
 public class DatabaseConnection {
 
+    private static DatabaseConnection databaseConnection;
     private Connection connection;
 
-    private static DatabaseConnection databaseConnection;
+    private DatabaseConnection() {
+        try {
+            connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/sql/season.db");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static DatabaseConnection getInstance() {
 
@@ -37,14 +44,6 @@ public class DatabaseConnection {
             }
         } else {
             throw new RuntimeException("No connection with DB");
-        }
-    }
-
-    private DatabaseConnection() {
-        try {
-            connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/sql/season.db");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 

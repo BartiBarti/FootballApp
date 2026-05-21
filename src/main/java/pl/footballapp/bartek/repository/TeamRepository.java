@@ -68,7 +68,7 @@ public class TeamRepository implements Repository {
     public boolean teamExist(String teamName) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement
-                    (select(true, false)  + TEAM_NAME_COL + " = ? ");
+                    (select(true, false) + TEAM_NAME_COL + " = ? ");
             preparedStatement.setString(1, teamName);
             ResultSet resultSet = preparedStatement.executeQuery();
             return resultSet.next();

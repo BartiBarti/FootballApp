@@ -17,6 +17,7 @@ import java.util.List;
 
 
 public class MainTable extends JFrame {
+    private static MainTable mainTable = new MainTable();
     private JPanel mainPanel;
     private JLabel titleLabel;
     private JButton addTeamButton;
@@ -32,14 +33,9 @@ public class MainTable extends JFrame {
     private JScrollPane scrollPane;
     private JButton paramButton;
     private SeasonModel choosenSeason;
-
     private SeasonLeagueService seasonLeagueService = new SeasonLeagueService();
-
     private SeasonService seasonService = new SeasonService();
-
     private TeamService teamService = new TeamService();
-
-    private static MainTable mainTable = new MainTable();
 
     public MainTable() {
         setTitle("Football App");
@@ -72,6 +68,10 @@ public class MainTable extends JFrame {
                 new ParameterWindow().setVisible(true);
             }
         });
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> mainTable.setVisible(true));
     }
 
     public void loadTable() {
@@ -172,10 +172,6 @@ public class MainTable extends JFrame {
                 loadTable();
             }
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> mainTable.setVisible(true));
     }
 
 
