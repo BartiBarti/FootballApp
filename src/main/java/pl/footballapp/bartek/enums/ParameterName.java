@@ -7,7 +7,9 @@ public enum ParameterName {
     UECL_PROMOTED_TEAMS_NUMBER("Liczba drużyn z awansem do LK: ", ParameterType.INTEGER),
     RELEGATED_TEAMS_NUMBER("Liczba drużyn spadających: ", ParameterType.INTEGER),
     START_SEASON_DATE("Data początku sezonu: ", ParameterType.DATE),
-    END_SEASON_DATE("Data końca sezonu: ", ParameterType.DATE);
+    END_SEASON_DATE("Data końca sezonu: ", ParameterType.DATE),
+    START_WINTER_BREAK("Początek przerwy zimowej: ", ParameterType.DATE),
+    END_WINTER_BREAK("Koniec przerwy zimowej: ", ParameterType.DATE);
 
     private String plParameterName;
 
