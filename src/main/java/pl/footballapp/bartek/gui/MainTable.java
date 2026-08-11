@@ -7,6 +7,8 @@ import pl.footballapp.bartek.model.TeamModel;
 import pl.footballapp.bartek.service.SeasonLeagueService;
 import pl.footballapp.bartek.service.SeasonService;
 import pl.footballapp.bartek.service.TeamService;
+import pl.footballapp.bartek.service.validator.ValidatorResult;
+import pl.footballapp.bartek.service.validator.ValidatorService;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -36,6 +38,7 @@ public class MainTable extends JFrame {
     private SeasonLeagueService seasonLeagueService = new SeasonLeagueService();
     private SeasonService seasonService = new SeasonService();
     private TeamService teamService = new TeamService();
+    private ValidatorService validatorService = new ValidatorService();
 
     public MainTable() {
         setTitle("Football App");
@@ -66,6 +69,13 @@ public class MainTable extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new ParameterWindow().setVisible(true);
+            }
+        });
+        startSeasonButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ValidatorResult validatorResult = validatorService.validateStartSeason(choosenSeason.getSeasonId());
+                validatorResult.toMessageDialog();
             }
         });
     }
