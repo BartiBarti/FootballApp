@@ -55,8 +55,8 @@ public class ParameterModel {
         this.parameterType = parameterType;
     }
 
-    public int getParameterIntValue(){
-        if(ParameterType.INTEGER == this.parameterType){
+    public int getParameterIntValue() {
+        if (ParameterType.INTEGER == this.parameterType) {
             return Integer.valueOf(this.parameterValue);
         } else {
             throw new IllegalArgumentException("Parameter Type is not aplicable.");

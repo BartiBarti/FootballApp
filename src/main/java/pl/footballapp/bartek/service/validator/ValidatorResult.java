@@ -23,8 +23,8 @@ public class ValidatorResult {
         this.message = message;
     }
 
-    public void toMessageDialog(){
-        if (!valid){
+    public void toMessageDialog() {
+        if (!valid) {
             JOptionPane.showMessageDialog(null, message, "Błąd walidacji", JOptionPane.WARNING_MESSAGE);
         }
     }
