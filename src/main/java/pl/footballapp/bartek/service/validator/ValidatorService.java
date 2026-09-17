@@ -3,6 +3,7 @@ package pl.footballapp.bartek.service.validator;
 import pl.footballapp.bartek.enums.ParameterName;
 import pl.footballapp.bartek.model.ParameterModel;
 import pl.footballapp.bartek.model.TeamModel;
+import pl.footballapp.bartek.service.MatchResultService;
 import pl.footballapp.bartek.service.MatchweekService;
 import pl.footballapp.bartek.service.ParameterService;
 import pl.footballapp.bartek.service.TeamService;
@@ -13,8 +14,9 @@ public class ValidatorService {
 
     private TeamService teamService = new TeamService();
     private ParameterService parameterService = new ParameterService();
-
     private MatchweekService matchweekService = new MatchweekService();
+
+    private MatchResultService matchResultService = new MatchResultService();
 
     public ValidatorResult validateStartSeason(int seasonId) {
         ParameterModel parameterModel = parameterService.findParameterByName(ParameterName.ALL_TEAMS_NUMBER);
@@ -46,20 +48,24 @@ public class ValidatorService {
         int requiredTeams = parameterModel.getParameterIntValue();
         int requiredMatchweeks = (requiredTeams - 1) * 2;
         int matchweeksCount = matchweekService.countBySeason(seasonId);
+        int requiredMatches = requiredTeams * (requiredTeams - 1);
+        int matchesCount = matchResultService.countBySeason(seasonId);
+        ValidatorResult validatorResult = new ValidatorResult();
+        validatorResult.setValid(true);
+
         if (matchweeksCount == 0) {
-            ValidatorResult validatorResult = new ValidatorResult();
             validatorResult.setValid(false);
             validatorResult.setMessage("Nie wygenerowano terminarza!");
-            return validatorResult;
-        }
-        if (matchweeksCount != requiredMatchweeks) {
-            ValidatorResult validatorResult = new ValidatorResult();
+        } else if (matchweeksCount != requiredMatchweeks) {
             validatorResult.setValid(false);
             validatorResult.setMessage("Niepoprawna liczba kolejek! \n Wymagane: "
                     + requiredMatchweeks + " Znaleziono: " + matchweeksCount);
-            return validatorResult;
+        } else if(matchesCount != requiredMatches){
+            validatorResult.setValid(false);
+            validatorResult.setMessage("Niepoprawna liczba meczy! \n Wymagane: "
+                    + requiredMatches + " Znaleziono: " + matchesCount);
         }
-        return null;
+        return validatorResult;
     }
 
 }
