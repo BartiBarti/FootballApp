@@ -34,6 +34,7 @@ public class MainTable extends JFrame {
     private JComboBox seasonComboBox;
     private JScrollPane scrollPane;
     private JButton paramButton;
+    private JButton generateScheduleButton;
     private SeasonModel choosenSeason;
     private SeasonLeagueService seasonLeagueService = new SeasonLeagueService();
     private SeasonService seasonService = new SeasonService();
@@ -76,6 +77,19 @@ public class MainTable extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 ValidatorResult validatorResult = validatorService.validateStartSeason(choosenSeason.getSeasonId());
                 validatorResult.toMessageDialog();
+            }
+        });
+        generateScheduleButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ValidatorResult validatorResult = validatorService.validateScheduleGeneration(choosenSeason.getSeasonId());
+                if(!validatorResult.isValid()){
+                    validatorResult.toMessageDialog();
+//                     todo sprawdzić czy harmonogram poprawny, jeśli nie to wygenerować jeszcze raz
+                } else {
+//                     todo implementacja generowania harmonogramu.
+                    System.out.println("Start generowania terminarza");
+                }
             }
         });
     }

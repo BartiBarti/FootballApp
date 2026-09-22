@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public class MatchResultModel {
 
-    public static final String TABLE_NAME = "MATCH_RESULT";
+    public static final String TABLE_NAME = "MATCH_RESULTS";
     public static final String MATCH_ID_COL = "MATCH_ID";
     public static final String MATCHWEEK_ID_COL = "MATCHWEEK_ID";
     public static final String SEASON_ID_COL = "SEASON_ID";

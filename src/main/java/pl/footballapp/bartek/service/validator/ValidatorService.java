@@ -31,6 +31,53 @@ public class ValidatorService {
         return validatorResult;
     }
 
+    public ValidatorResult validateScheduleGeneration(int seasonId) {
+        ValidatorResult validatorResult = new ValidatorResult();
+        validatorResult.setValid(true);
+
+
+        int matchweekCount = matchweekService.countBySeason(seasonId);
+        int matchCount = matchResultService.countBySeason(seasonId);
+        if (matchweekCount > 0 || matchCount > 0) {
+            validatorResult.setValid(false);
+            validatorResult.setMessage("Terminarz dla sezonu został już wygenerowany!");
+            return validatorResult;
+        }
+
+        ParameterModel parameterModel = parameterService.findParameterByName(ParameterName.ALL_TEAMS_NUMBER);
+        validatorResult = isTeamNumberValid(seasonId, parameterModel);
+        if (!validatorResult.isValid()) {
+            return validatorResult;
+        }
+
+        validatorResult = validateTeamNumberForRoundRobin(seasonId);
+        if (!validatorResult.isValid()) {
+            return validatorResult;
+        }
+
+        return validatorResult;
+    }
+
+    private ValidatorResult validateTeamNumberForRoundRobin(int seasonId) {
+        List<TeamModel> teamsAddedToSeason = teamService.findAllTeamsCurrentlyAddedToSeason(seasonId);
+        ValidatorResult validatorResult = new ValidatorResult();
+        validatorResult.setValid(true);
+
+        if (teamsAddedToSeason.size() < 2) {
+            validatorResult.setValid(false);
+            validatorResult.setMessage("Do wygenerowania terminarza potrzebne są \n" +
+                    " minimum 2 drużyny. Dodano: " + teamsAddedToSeason.size());
+            return validatorResult;
+        }
+        if (teamsAddedToSeason.size() % 2 != 0) {
+            validatorResult.setValid(false);
+            validatorResult.setMessage("Terminarz wymaga parzystej liczby drużyn. Dostaliśmy: " + teamsAddedToSeason.size());
+            return validatorResult;
+        }
+
+        return validatorResult;
+    }
+
     private ValidatorResult isTeamNumberValid(int seasonId, ParameterModel parameterModel) {
         List<TeamModel> teamsAddedToSeason = teamService.findAllTeamsCurrentlyAddedToSeason(seasonId);
         ValidatorResult validatorResult = new ValidatorResult();
@@ -60,7 +107,7 @@ public class ValidatorService {
             validatorResult.setValid(false);
             validatorResult.setMessage("Niepoprawna liczba kolejek! \n Wymagane: "
                     + requiredMatchweeks + " Znaleziono: " + matchweeksCount);
-        } else if(matchesCount != requiredMatches){
+        } else if (matchesCount != requiredMatches) {
             validatorResult.setValid(false);
             validatorResult.setMessage("Niepoprawna liczba meczy! \n Wymagane: "
                     + requiredMatches + " Znaleziono: " + matchesCount);
