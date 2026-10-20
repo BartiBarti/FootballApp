@@ -32,4 +32,8 @@ public class SeasonLeagueService {
         seasonLeagueRepository.deleteTeam(teamId);
     }
 
+    public List<Integer> findAllTeamIdsFromSeason(int seasonId) {
+        return seasonLeagueRepository.findAllTeamIdsFromSeason(seasonId);
+    }
+
 }

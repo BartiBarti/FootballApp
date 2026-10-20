@@ -3,6 +3,8 @@ package pl.footballapp.bartek.model;
 import pl.footballapp.bartek.enums.ParameterName;
 import pl.footballapp.bartek.enums.ParameterType;
 
+import java.time.LocalDate;
+
 public class ParameterModel {
 
     public static final String TABLE_NAME = "PARAMETERS";
@@ -59,7 +61,15 @@ public class ParameterModel {
         if (ParameterType.INTEGER == this.parameterType) {
             return Integer.valueOf(this.parameterValue);
         } else {
-            throw new IllegalArgumentException("Parameter Type is not aplicable.");
+            throw new IllegalArgumentException("Parameter Type " + this.parameterType + " is not aplicable. Required: " + ParameterType.INTEGER);
+        }
+    }
+
+    public LocalDate getParameterDateValue() {
+        if (ParameterType.DATE == this.parameterType) {
+            return LocalDate.parse(this.parameterValue);
+        } else {
+            throw new IllegalArgumentException("Parameter Type " + this.parameterType + " is not aplicable. Required: " + ParameterType.DATE);
         }
     }
 

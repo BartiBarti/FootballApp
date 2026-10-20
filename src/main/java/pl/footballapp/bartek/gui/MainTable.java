@@ -4,6 +4,7 @@ import pl.footballapp.bartek.enums.SeasonStatus;
 import pl.footballapp.bartek.model.SeasonLeagueModel;
 import pl.footballapp.bartek.model.SeasonModel;
 import pl.footballapp.bartek.model.TeamModel;
+import pl.footballapp.bartek.service.ScheduleGeneratorService;
 import pl.footballapp.bartek.service.SeasonLeagueService;
 import pl.footballapp.bartek.service.SeasonService;
 import pl.footballapp.bartek.service.TeamService;
@@ -40,6 +41,7 @@ public class MainTable extends JFrame {
     private SeasonService seasonService = new SeasonService();
     private TeamService teamService = new TeamService();
     private ValidatorService validatorService = new ValidatorService();
+    private ScheduleGeneratorService scheduleGeneratorService = new ScheduleGeneratorService();
 
     public MainTable() {
         setTitle("Football App");
@@ -83,12 +85,11 @@ public class MainTable extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ValidatorResult validatorResult = validatorService.validateScheduleGeneration(choosenSeason.getSeasonId());
-                if(!validatorResult.isValid()){
+                if (!validatorResult.isValid()) {
                     validatorResult.toMessageDialog();
 //                     todo sprawdzić czy harmonogram poprawny, jeśli nie to wygenerować jeszcze raz
                 } else {
-//                     todo implementacja generowania harmonogramu.
-                    System.out.println("Start generowania terminarza");
+                    scheduleGeneratorService.generateSchedule(choosenSeason.getSeasonId());
                 }
             }
         });
@@ -181,18 +182,28 @@ public class MainTable extends JFrame {
     private void deleteTeamAction() {
         int selectedRow = seasonLeagueTable.getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(MainTable.this, "No Team selected yet",
-                    "WARNING!", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(MainTable.this, "Nie wybrano drużyny do usunięcia!",
+                    "Uwaga!", JOptionPane.WARNING_MESSAGE);
         } else {
-            int confirmation = JOptionPane.showConfirmDialog(MainTable.this, "Are you sure you want \n to delete this team?",
-                    "CONFIRMATION", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            Object[] options = {"Tak", "Nie"};
+            int confirmation = JOptionPane.showOptionDialog(
+                    MainTable.this,
+                    "Czy jesteś pewien \n że chcesz usunąć drużynę?",
+                    "Potwierdzenie!",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,          // ikona domyślna
+                    options,       // nasza tablica z napisami
+                    options[0]     // domyślnie zaznaczony przycisk (w tym wypadku "Tak")
+            );
+
             if (confirmation == JOptionPane.YES_OPTION) {
                 String selectedTeam = (String) seasonLeagueTable.getValueAt(selectedRow, 1);
                 TeamModel team = teamService.findTeamByName(selectedTeam);
                 seasonLeagueService.deleteTeamFromSeasonLeague(team.getTeamId());
-                JOptionPane.showMessageDialog(MainTable.this, "Team "
-                                + selectedTeam + " deleted from season!",
-                        "DELETED", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(MainTable.this, "Drużyna "
+                                + selectedTeam + " usunięta z sezonu!",
+                        "Usunięto!", JOptionPane.INFORMATION_MESSAGE);
                 loadTable();
             }
         }
